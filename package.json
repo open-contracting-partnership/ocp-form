@@ -71,6 +71,7 @@
 		"node-bourbon": "^4.2.8",
 		"require-globify": "^1.4.1",
 		"sass": "<1.33.0",
+		"semistandard": "^17.0.0",
 		"vinyl-buffer": "^1.0.1",
 		"vinyl-source-stream": "^2.0.0",
 		"watchify": "^4.0.0"
