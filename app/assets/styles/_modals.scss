@@ -186,7 +186,7 @@
   top: $global-spacing;
   right: $global-spacing;
   z-index: 10;
-  &:before { @extend .linearicons-0822-cross2; }
+  &:before { @extend .linearicons-0822-cross2 !optional; }
   @include media(large-up) {
     top: $global-spacing * 2;
     right: $global-spacing * 2;
@@ -196,11 +196,11 @@
 .button-modal-save {
   min-width: 8rem;
   @extend .button, .button--small, .button--primary;
-  &:before { @extend .linearicons-0821-check; }
+  &:before { @extend .linearicons-0821-check !optional; }
 }
 
 .button-modal-cancel {
   min-width: 8rem;
   @extend .button, .button--small, .button--tertiary-outline;
-  &:before { @extend .linearicons-0811-cross; }
+  &:before { @extend .linearicons-0811-cross !optional; }
 }

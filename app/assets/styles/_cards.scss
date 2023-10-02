@@ -241,30 +241,30 @@
 
 .button-card-toggle-visibility {
   @extend .button, .button--small, .button--tertiary-unbounded, .button--text-hidden;
-  &:before { @extend .linearicons-0166-eye; }
+  &:before { @extend .linearicons-0166-eye !optional; }
 }
 
 .button-card-edit {
   @extend .button, .button--small, .button--secondary-unbounded, .button--text-hidden;
-  &:before { @extend .linearicons-0014-pencil; }
+  &:before { @extend .linearicons-0014-pencil !optional; }
 }
 
 .button-card-options {
   @extend .button, .button--small, .button--secondary-unbounded, .button--text-hidden;
-  &:before { @extend .linearicons-1002-ellipsis; }
+  &:before { @extend .linearicons-1002-ellipsis !optional; }
 }
 
 .button-card-twitter {
   @extend .button, .button--small, .button--secondary-unbounded, .button--text-hidden;
-  &:before { @extend .linearicons-ext-twitter; }
+  &:before { @extend .linearicons-ext-twitter !optional; }
 }
 
 .button-card-medium {
   @extend .button, .button--small, .button--secondary-unbounded, .button--text-hidden;
-  &:before { @extend .linearicons-ext-medium; }
+  &:before { @extend .linearicons-ext-medium !optional; }
 }
 
 .button-card-share {
   @extend .button, .button--small, .button--secondary-unbounded, .button--text-hidden;
-  &:before { @extend .linearicons-0764-exit-up; }
+  &:before { @extend .linearicons-0764-exit-up !optional; }
 }

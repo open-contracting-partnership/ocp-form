@@ -12,10 +12,9 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
-var exit = require('gulp-exit');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
-var notifier = require('node-notifier');
+var sass = require('gulp-sass')(require('sass'));
 
 // /////////////////////////////////////////////////////////////////////////////
 // --------------------------- Variables -------------------------------------//
@@ -36,6 +35,8 @@ if (!process.env.DS_ENV) {
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+var watching = false;
+
 // /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Helper functions --------------------------------//
 // ---------------------------------------------------------------------------//
@@ -46,52 +47,6 @@ function readPackage () {
 readPackage();
 
 // /////////////////////////////////////////////////////////////////////////////
-// ------------------------- Callable tasks ----------------------------------//
-// ---------------------------------------------------------------------------//
-
-gulp.task('default', ['clean'], function () {
-  gulp.start('build');
-});
-
-gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function () {
-  browserSync({
-    port: 3000,
-    server: {
-      baseDir: ['.tmp', 'app'],
-      routes: {
-        '/node_modules': './node_modules'
-      }
-    }
-  });
-
-  // watch for changes
-  gulp.watch([
-    'app/*.html',
-    'app/assets/graphics/**/*',
-    '.tmp/assets/fonts/**/*'
-  ]).on('change', reload);
-
-  gulp.watch('app/assets/styles/**/*.scss', ['styles']);
-  gulp.watch('app/assets/fonts/**/*', ['fonts']);
-  gulp.watch('package.json', ['vendorScripts']);
-});
-
-gulp.task('clean', function () {
-  return del(['.tmp', 'dist'])
-    .then(function () {
-      $.cache.clearAll();
-    });
-});
-
-gulp.task('build', ['vendorScripts', 'javascript'], function () {
-  gulp.start(['html', 'images', 'fonts', 'extras'], function () {
-    return gulp.src('dist/**/*')
-      .pipe($.size({title: 'build', gzip: true}))
-      .pipe(exit());
-  });
-});
-
-// /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Browserify tasks --------------------------------//
 // ------------------- (Not to be called directly) ---------------------------//
 // ---------------------------------------------------------------------------//
@@ -100,13 +55,17 @@ gulp.task('build', ['vendorScripts', 'javascript'], function () {
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
 gulp.task('javascript', function () {
-  var watcher = watchify(browserify({
+  var watcher = browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
     cache: {},
     packageCache: {},
     fullPaths: true
-  }));
+  });
+
+  if (watching) {
+    watcher = watchify(watcher);
+  }
 
   function bundler () {
     if (pkg.dependencies) {
@@ -114,13 +73,7 @@ gulp.task('javascript', function () {
     }
     return watcher.bundle()
       .on('error', function (e) {
-        notifier.notify({
-          title: 'Oops! Browserify errored:',
-          message: e.message
-        });
         console.log('Javascript error:', e);
-        // Allows the watch to continue.
-        this.emit('end');
       })
       .pipe(source('bundle.js'))
       .pipe(buffer())
@@ -163,17 +116,8 @@ gulp.task('vendorScripts', function () {
 
 gulp.task('styles', function () {
   return gulp.src('app/assets/styles/main.scss')
-    .pipe($.plumber(function (e) {
-      notifier.notify({
-        title: 'Oops! Sass errored:',
-        message: e.message
-      });
-      console.log('Sass error:', e.toString());
-      // Allows the watch to continue.
-      this.emit('end');
-    }))
     .pipe($.sourcemaps.init())
-    .pipe($.sass({
+    .pipe(sass({
       outputStyle: 'expanded',
       precision: 10,
       includePaths: ['.'].concat(require('node-bourbon').includePaths).concat(['node_modules/jeet/scss'])
@@ -183,7 +127,7 @@ gulp.task('styles', function () {
     .pipe(reload({stream: true}));
 });
 
-gulp.task('html', ['styles'], function () {
+gulp.task('html', gulp.series('styles', function () {
   return gulp.src('app/*.html')
     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
     .pipe($.if('*.js', $.uglify()))
@@ -191,7 +135,7 @@ gulp.task('html', ['styles'], function () {
     .pipe($.if(/\.(css|js)$/, rev()))
     .pipe(revReplace())
     .pipe(gulp.dest('dist'));
-});
+}));
 
 gulp.task('images', function () {
   return gulp.src('app/assets/graphics/**/*')
@@ -223,3 +167,46 @@ gulp.task('extras', function () {
     dot: true
   }).pipe(gulp.dest('dist'));
 });
+
+// /////////////////////////////////////////////////////////////////////////////
+// ------------------------- Callable tasks ----------------------------------//
+// ---------------------------------------------------------------------------//
+
+gulp.task('clean', function () {
+  return del(['.tmp', 'dist'])
+    .then(function () {
+      $.cache.clearAll();
+    });
+});
+
+gulp.task('serve', gulp.series(function () {
+  watching = true;
+}, gulp.parallel('vendorScripts', 'javascript', 'styles', 'fonts'), function () {
+  browserSync({
+    port: 3000,
+    server: {
+      baseDir: ['.tmp', 'app'],
+      routes: {
+        '/node_modules': './node_modules'
+      }
+    }
+  });
+
+  // watch for changes
+  gulp.watch([
+    'app/*.html',
+    'app/assets/graphics/**/*',
+    '.tmp/assets/fonts/**/*'
+  ]).on('change', reload);
+
+  gulp.watch('app/assets/styles/**/*.scss', ['styles']);
+  gulp.watch('app/assets/fonts/**/*', ['fonts']);
+  gulp.watch('package.json', ['vendorScripts']);
+}));
+
+gulp.task('build', gulp.series(gulp.parallel('vendorScripts', 'javascript'), gulp.parallel('html', 'images', 'fonts', 'extras'), function () {
+  return gulp.src('dist/**/*')
+    .pipe($.size({title: 'build', gzip: true}));
+}));
+
+gulp.task('default', gulp.parallel('clean', 'build'));

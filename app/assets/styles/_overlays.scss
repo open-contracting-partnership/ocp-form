@@ -10,7 +10,7 @@
 .drop__toggle {
   &.caret {
     &:after {
-      @extend .linearicons-ext-sm-chevron-down;
+      @extend .linearicons-ext-sm-chevron-down !optional;
       font-size: 1.25rem;
       margin-left: 0.25rem;
     }
@@ -139,7 +139,7 @@
       color: inherit;
       outline: 0;
       &:after {
-        @extend .linearicons-0821-check;
+        @extend .linearicons-0821-check !optional;
         position: absolute;
         z-index: 1;
         top: $global-spacing / 4;
@@ -169,10 +169,10 @@
 
   /* Iconified extends */
   .drop__menu-item {
-    &.edit:before { @extend .linearicons-0014-pencil; }
-    &.duplicate:before { @extend .linearicons-0185-copy; }
-    &.delete:before { @extend .linearicons-0129-trash; }
-    &.share:before { @extend .linearicons-0764-exit-up; }
+    &.edit:before { @extend .linearicons-0014-pencil !optional; }
+    &.duplicate:before { @extend .linearicons-0185-copy !optional; }
+    &.delete:before { @extend .linearicons-0129-trash !optional; }
+    &.share:before { @extend .linearicons-0764-exit-up !optional; }
   }
 }
 

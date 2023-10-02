@@ -226,7 +226,7 @@
    ========================================================================== */
 
 .button {
-  &.download:before { @extend .linearicons-0758-download2; }
-  &.twitter:before { @extend .linearicons-ext-twitter; }
-  &.edit:before { @extend .linearicons-0014-pencil; }
+  &.download:before { @extend .linearicons-0758-download2 !optional; }
+  &.twitter:before { @extend .linearicons-ext-twitter !optional; }
+  &.edit:before { @extend .linearicons-0014-pencil !optional; }
 }
