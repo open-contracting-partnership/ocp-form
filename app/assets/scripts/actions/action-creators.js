@@ -34,8 +34,8 @@ export function fetchForms () {
         dispatch(receiveForms(json));
       });
 
-      // In a real world app, you also want to
-      // catch any error in the network call.
+    // In a real world app, you also want to
+    // catch any error in the network call.
   };
 }
 
@@ -72,8 +72,8 @@ export function fetchFormsEntries (form) {
         dispatch(receiveFormsEntries(json));
       });
 
-      // In a real world app, you also want to
-      // catch any error in the network call.
+    // In a real world app, you also want to
+    // catch any error in the network call.
   };
 }
 
@@ -109,8 +109,8 @@ export function fetchEntryFormData (form, entry) {
         dispatch(receiveEntryFormData(json));
       });
 
-      // In a real world app, you also want to
-      // catch any error in the network call.
+    // In a real world app, you also want to
+    // catch any error in the network call.
   };
 }
 
@@ -143,7 +143,7 @@ export function updateEntryFormData (form, entry, data) {
     return fetch(`${config.api}/forms/${form}/entries/${entry}`, {
       method: 'put',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
@@ -153,7 +153,7 @@ export function updateEntryFormData (form, entry, data) {
         dispatch(finishUpdateEntryFormData(json));
       });
 
-      // In a real world app, you also want to
-      // catch any error in the network call.
+    // In a real world app, you also want to
+    // catch any error in the network call.
   };
 }

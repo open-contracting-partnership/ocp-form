@@ -1,5 +1,5 @@
 'use strict';
-var _ = require('lodash');
+const _ = require('lodash');
 /*
  * App configuration.
  *
@@ -19,8 +19,8 @@ var _ = require('lodash');
  *      polluting the repo.
  */
 
-var configurations = require('./config/*.js', {mode: 'hash'});
-var config = configurations.local || {};
+const configurations = require('./config/*.js', { mode: 'hash' });
+const config = configurations.local || {};
 
 if (process.env.DS_ENV === 'staging') {
   _.defaultsDeep(config, configurations.staging);

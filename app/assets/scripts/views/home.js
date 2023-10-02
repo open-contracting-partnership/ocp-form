@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { fetchForms } from '../actions/action-creators';
 
-var Home = React.createClass({
+const Home = React.createClass({
   displayName: 'Home',
 
   propTypes: {
@@ -37,23 +37,25 @@ var Home = React.createClass({
           <div className='inner'>
             <div className='page__content'>
 
-              {this.props.formsFetching ? <p>Loading forms...</p> : (
-              <div>
-                <ul className='card-entries'>
-                  {this.props.forms.map(o => {
-                    return (
-                      <li key={o.name} className='card--form-wrapper'>
-                        <article className='card card--form'>
-                          <Link to={`/forms/${o.name}`} className='card__contents'>
-                            <h1 className='card__title'>{o.name}</h1>
-                          </Link>
-                        </article>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-              )}
+              {this.props.formsFetching
+                ? <p>Loading forms...</p>
+                : (
+                  <div>
+                    <ul className='card-entries'>
+                      {this.props.forms.map(o => {
+                        return (
+                          <li key={o.name} className='card--form-wrapper'>
+                            <article className='card card--form'>
+                              <Link to={`/forms/${o.name}`} className='card__contents'>
+                <h1 className='card__title'>{o.name}</h1>
+              </Link>
+                            </article>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  )}
 
             </div>
           </div>

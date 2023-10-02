@@ -6,7 +6,7 @@ import Form from 'react-jsonschema-form';
 import _ from 'lodash';
 import { fetchEntryFormData, updateEntryFormData } from '../actions/action-creators';
 
-var Entry = React.createClass({
+const Entry = React.createClass({
   displayName: 'Entry',
 
   propTypes: {
@@ -44,18 +44,18 @@ var Entry = React.createClass({
 
   componentWillReceiveProps: function (nextProps) {
     if (this.props.formdata !== nextProps.formdata) {
-      this.setState({formdata: nextProps.formdata});
+      this.setState({ formdata: nextProps.formdata });
     }
   },
 
   onFormChange: function (data) {
     // console.log('onFormChange', arguments);
-    this.setState({formdata: data.formData});
+    this.setState({ formdata: data.formData });
   },
 
   onFormSubmit: function (data) {
     if (!this.props.dataUpdate.updating) {
-      let d = {
+      const d = {
         author: data.formData.author,
         form: this.props.form,
         entry: this.props.entry,
@@ -91,7 +91,7 @@ var Entry = React.createClass({
       );
     }
 
-    let schema = this.props.schema;
+    const schema = this.props.schema;
     if (schema.properties) {
       schema.properties.author = {
         title: 'User information (Optional)',
@@ -112,7 +112,7 @@ var Entry = React.createClass({
       };
     }
 
-    let uiSchema = {};
+    const uiSchema = {};
     _.forEach(schema.properties, (o, i) => {
       if (o.properties) {
         uiSchema[i] = {
@@ -128,20 +128,24 @@ var Entry = React.createClass({
 
     return (
       <div className='form-entry-form-wrapper'>
-        <Form schema={schema}
+        <Form
+          schema={schema}
           formData={this.state.formdata}
           uiSchema={uiSchema}
           onChange={this.onFormChange}
           onSubmit={this.onFormSubmit}
-          onError={this.onFormError}>
-            <button type='submit' className='button button--primary-outline'>Submit</button>
+          onError={this.onFormError}
+        >
+          <button type='submit' className='button button--primary-outline'>Submit</button>
         </Form>
-        {this.props.dataUpdate.statusCode !== null && this.props.dataUpdate.statusCode !== 200 ? (
-          <div className='alert alert--danger alert--popover' role='alert'>
-            <strong>Error:</strong> {this.props.dataUpdate.message}
-            <p>Please try again.</p>
-          </div>
-        ) : null}
+        {this.props.dataUpdate.statusCode !== null && this.props.dataUpdate.statusCode !== 200
+          ? (
+            <div className='alert alert--danger alert--popover' role='alert'>
+              <strong>Error:</strong> {this.props.dataUpdate.message}
+              <p>Please try again.</p>
+            </div>
+            )
+          : null}
       </div>
     );
   },
@@ -164,7 +168,7 @@ var Entry = React.createClass({
         <div className='page__body'>
           <div className='inner'>
             <div className='page__content'>
-            {this.renderContent()}
+              {this.renderContent()}
             </div>
           </div>
         </div>

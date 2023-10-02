@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-var UhOh = React.createClass({
+const UhOh = React.createClass({
   displayName: 'UhOh',
 
   render: function () {

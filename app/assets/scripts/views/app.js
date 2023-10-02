@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 
-var App = React.createClass({
+const App = React.createClass({
   displayName: 'App',
 
   propTypes: {

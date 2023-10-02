@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { fetchFormsEntries } from '../actions/action-creators';
 
-var Form = React.createClass({
+const Form = React.createClass({
   displayName: 'Form',
 
   propTypes: {
@@ -42,23 +42,25 @@ var Form = React.createClass({
           <div className='inner'>
             <div className='page__content'>
 
-              {this.props.entriesFetching ? <p>Loading form entries</p> : (
-              <div>
-                <ul className='card-entries'>
-                  {this.props.entries.map(o => {
-                    return (
-                      <li key={o.name} className='card--entry-wrapper'>
-                        <article className='card card--entry'>
-                          <Link to={`/forms/${this.props.form}/${o.id}`} className='card__contents'>
-                            <h1 className='card__title'>{o.name}</h1>
-                          </Link>
-                        </article>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-              )}
+              {this.props.entriesFetching
+                ? <p>Loading form entries</p>
+                : (
+                  <div>
+                    <ul className='card-entries'>
+                      {this.props.entries.map(o => {
+                        return (
+                          <li key={o.name} className='card--entry-wrapper'>
+                            <article className='card card--entry'>
+                              <Link to={`/forms/${this.props.form}/${o.id}`} className='card__contents'>
+                <h1 className='card__title'>{o.name}</h1>
+              </Link>
+                            </article>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  )}
 
             </div>
           </div>

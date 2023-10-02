@@ -34,12 +34,12 @@ render((
   <Provider store={store}>
     <Router history={hashHistory}>
       <Route path='/' component={App}>
-        <Route path='forms/:form' component={Form}/>
-        <Route path='forms/:form/:entry' component={Entry}/>
-        <IndexRoute component={Home}/>
+        <Route path='forms/:form' component={Form} />
+        <Route path='forms/:form/:entry' component={Entry} />
+        <IndexRoute component={Home} />
       </Route>
       <Route path='*' component={App}>
-        <IndexRoute component={UhOh}/>
+        <IndexRoute component={UhOh} />
       </Route>
     </Router>
   </Provider>
