@@ -157,6 +157,7 @@ gulp.task('fonts', function () {
 
 gulp.task('extras', function () {
   return gulp.src([
+    '_headers',
     'app/**/*',
     '!app/*.html',
     '!app/assets/graphics/**',
