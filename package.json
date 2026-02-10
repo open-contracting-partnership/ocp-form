@@ -43,7 +43,7 @@
 		"babel-preset-react": "^6.24.1",
 		"babelify": "^8.0.0",
 		"bourbon": "<4.3.0",
-		"browser-sync": "^2.29.3",
+		"browser-sync": "^3.0.4",
 		"browserify": "^17.0.0",
 		"del": "^6.0.0",
 		"envify": "^4.1.0",
