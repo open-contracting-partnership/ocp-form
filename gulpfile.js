@@ -137,15 +137,19 @@ gulp.task('html', gulp.series('styles', function () {
     .pipe(gulp.dest('dist'));
 }));
 
-gulp.task('images', function () {
-  return gulp.src('app/assets/graphics/**/*')
-    .pipe($.cache($.imagemin({
-      progressive: true,
-      interlaced: true,
+gulp.task('images', async function () {
+  var imagemin = await import('gulp-imagemin');
+  return gulp.src('app/assets/graphics/**/*', {encoding: false})
+    .pipe($.cache(imagemin.default([
       // don't remove IDs from SVGs, they are often used
       // as hooks for embedding and styling
-      svgoPlugins: [{cleanupIDs: false}]
-    })))
+      imagemin.svgo({
+        plugins: [{
+          name: 'preset-default',
+          params: {overrides: {cleanupIds: false}}
+        }]
+      })
+    ])))
     .pipe(gulp.dest('dist/assets/graphics'));
 });
 
