@@ -149,12 +149,6 @@ gulp.task('images', function () {
     .pipe(gulp.dest('dist/assets/graphics'));
 });
 
-gulp.task('fonts', function () {
-  return gulp.src('app/assets/fonts/**/*')
-    .pipe(gulp.dest('.tmp/assets/fonts'))
-    .pipe(gulp.dest('dist/assets/fonts'));
-});
-
 gulp.task('extras', function () {
   return gulp.src([
     '_headers',
@@ -182,7 +176,7 @@ gulp.task('clean', function () {
 
 gulp.task('serve', gulp.series(function () {
   watching = true;
-}, gulp.parallel('vendorScripts', 'javascript', 'styles', 'fonts'), function () {
+}, gulp.parallel('vendorScripts', 'javascript', 'styles'), function () {
   browserSync({
     port: 3000,
     server: {
@@ -196,16 +190,14 @@ gulp.task('serve', gulp.series(function () {
   // watch for changes
   gulp.watch([
     'app/*.html',
-    'app/assets/graphics/**/*',
-    '.tmp/assets/fonts/**/*'
+    'app/assets/graphics/**/*'
   ]).on('change', reload);
 
   gulp.watch('app/assets/styles/**/*.scss', ['styles']);
-  gulp.watch('app/assets/fonts/**/*', ['fonts']);
   gulp.watch('package.json', ['vendorScripts']);
 }));
 
-gulp.task('build', gulp.series(gulp.parallel('vendorScripts', 'javascript'), gulp.parallel('html', 'images', 'fonts', 'extras'), function () {
+gulp.task('build', gulp.series(gulp.parallel('vendorScripts', 'javascript'), gulp.parallel('html', 'images', 'extras'), function () {
   return gulp.src('dist/**/*')
     .pipe($.size({title: 'build', gzip: true}));
 }));
