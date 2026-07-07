@@ -6,14 +6,12 @@ This project is a fork of a [Blue Pencil](https://github.com/developmentseed/blu
 ## Development environment
 To set up the development environment for this website, you'll need to install the following on your system:
 
-- Node (v4.2.x) & Npm ([nvm](https://github.com/creationix/nvm) usage is advised)
-
-> The versions mentioned are the ones used during development. It could work with newer ones.
-  Run `nvm use` to activate the correct version.
+- Node (see the `engines` field in `package.json`; [nvm](https://github.com/creationix/nvm) usage is advised)
+- [pnpm](https://pnpm.io) (Corepack, bundled with Node, can install the pinned version: `corepack enable`)
 
 After these basic requirements are met, run the following commands in the website's folder:
 ```
-$ npm install
+$ pnpm install
 ```
 
 ### Server
@@ -26,7 +24,7 @@ After running a local copy add the address to `config/production.js`:
 ### Getting started
 
 ```
-$ npm run serve
+$ pnpm run serve
 ```
 or
 ```
@@ -39,7 +37,7 @@ The site will automatically refresh since it is bundled with livereload.
 ### Other commands
 Compile the sass files, javascript... Use this instead of ```gulp serve``` if you don't want to watch.
 ```
-$ npm run build
+$ pnpm run build
 ```
 or
 ```

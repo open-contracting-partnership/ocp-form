@@ -15,6 +15,10 @@
 		"url": "https://github.com/open-contracting-partnership/ocp-form/issues"
 	},
 	"homepage": "https://github.com/open-contracting-partnership/ocp-form",
+	"engines": {
+		"node": "22"
+	},
+	"packageManager": "pnpm@11.9.0",
 	"scripts": {
 		"postinstall": "[ -f app/assets/scripts/config/local.js ] || echo 'module.exports = {};' > app/assets/scripts/config/local.js",
 		"serve": "gulp serve",
