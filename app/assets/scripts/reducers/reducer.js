@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import { routeReducer } from 'redux-simple-router';
 import * as actions from '../actions/action-types';
 
-const forms = function (state = { items: [], fetching: false, fetched: false }, action) {
+const forms = (state = { items: [], fetching: false, fetched: false }, action) => {
   switch (action.type) {
     case actions.REQUEST_FORMS:
       console.log('REQUEST_FORMS');
@@ -21,7 +21,7 @@ const forms = function (state = { items: [], fetching: false, fetched: false }, 
   return state;
 };
 
-const formEntries = function (state = { items: [], fetching: false, fetched: false }, action) {
+const formEntries = (state = { items: [], fetching: false, fetched: false }, action) => {
   switch (action.type) {
     case actions.REQUEST_FORMS_ENTRIES:
       console.log('REQUEST_FORMS_ENTRIES');
@@ -55,7 +55,7 @@ const defaultEntryFormDataState = {
     message: null
   }
 };
-const entryFormData = function (state = defaultEntryFormDataState, action) {
+const entryFormData = (state = defaultEntryFormDataState, action) => {
   switch (action.type) {
     case actions.REQUEST_ENTRY_FORM_DATA:
       console.log('REQUEST_ENTRY_FORM_DATA');

@@ -1,17 +1,17 @@
 import fetch from 'isomorphic-fetch';
-import * as actions from './action-types';
 import config from '../config';
+import * as actions from './action-types';
 
 // ////////////////////////////////////////////////////////////////////////////
 // //// Fetch Forms Thunk
 
-function requestForms () {
+function requestForms() {
   return {
     type: actions.REQUEST_FORMS
   };
 }
 
-function receiveForms (json) {
+function receiveForms(json) {
   return {
     type: actions.RECEIVE_FORMS,
     items: json.forms,
@@ -19,7 +19,7 @@ function receiveForms (json) {
   };
 }
 
-export function fetchForms () {
+export function fetchForms() {
   return dispatch => {
     dispatch(requestForms());
 
@@ -42,13 +42,13 @@ export function fetchForms () {
 // ////////////////////////////////////////////////////////////////////////////
 // //// Fetch Forms Entries Thunk
 
-function requestFormsEntries () {
+function requestFormsEntries() {
   return {
     type: actions.REQUEST_FORMS_ENTRIES
   };
 }
 
-function receiveFormsEntries (json) {
+function receiveFormsEntries(json) {
   return {
     type: actions.RECEIVE_FORMS_ENTRIES,
     form: json.form,
@@ -57,7 +57,7 @@ function receiveFormsEntries (json) {
   };
 }
 
-export function fetchFormsEntries (form) {
+export function fetchFormsEntries(form) {
   return dispatch => {
     dispatch(requestFormsEntries());
 
@@ -80,13 +80,13 @@ export function fetchFormsEntries (form) {
 // ////////////////////////////////////////////////////////////////////////////
 // //// Fetch Forms Entries Thunk
 
-function requestEntryFormData () {
+function requestEntryFormData() {
   return {
     type: actions.REQUEST_ENTRY_FORM_DATA
   };
 }
 
-function receiveEntryFormData (json) {
+function receiveEntryFormData(json) {
   return {
     type: actions.RECEIVE_ENTRY_FORM_DATA,
     response: json,
@@ -94,7 +94,7 @@ function receiveEntryFormData (json) {
   };
 }
 
-export function fetchEntryFormData (form, entry) {
+export function fetchEntryFormData(form, entry) {
   return dispatch => {
     dispatch(requestEntryFormData());
 
@@ -117,13 +117,13 @@ export function fetchEntryFormData (form, entry) {
 // ////////////////////////////////////////////////////////////////////////////
 // //// Fetch Forms Entries Thunk
 
-function startUpdateEntryFormData () {
+function startUpdateEntryFormData() {
   return {
     type: actions.START_UPDATE_ENTRY_FORM_DATA
   };
 }
 
-function finishUpdateEntryFormData (json) {
+function finishUpdateEntryFormData(json) {
   return {
     type: actions.FINISH_UPDATE_ENTRY_FORM_DATA,
     response: json,
@@ -131,7 +131,7 @@ function finishUpdateEntryFormData (json) {
   };
 }
 
-export function updateEntryFormData (form, entry, data) {
+export function updateEntryFormData(form, entry, data) {
   return dispatch => {
     dispatch(startUpdateEntryFormData());
 

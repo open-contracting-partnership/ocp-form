@@ -1,20 +1,18 @@
-'use strict';
 import 'babel-polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunkMiddleware from 'redux-thunk';
+import { hashHistory, IndexRoute, Route, Router } from 'react-router';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { syncHistory } from 'redux-simple-router';
+import thunkMiddleware from 'redux-thunk';
 
 import reducer from './reducers/reducer';
-
-import UhOh from './views/uhoh';
 import App from './views/app';
-import Home from './views/home';
-import Form from './views/form';
 import Entry from './views/entry';
+import Form from './views/form';
+import Home from './views/home';
+import UhOh from './views/uhoh';
 
 // Sync dispatched route actions to the history
 const reduxRouterMiddleware = syncHistory(hashHistory);
@@ -30,7 +28,7 @@ const store = finalCreateStore(reducer);
 // Required for replaying actions from devtools to work
 // reduxRouterMiddleware.listenForReplays(store);
 
-render((
+render(
   <Provider store={store}>
     <Router history={hashHistory}>
       <Route path='/' component={App}>
@@ -42,5 +40,6 @@ render((
         <IndexRoute component={UhOh} />
       </Route>
     </Router>
-  </Provider>
-), document.querySelector('#site-canvas'));
+  </Provider>,
+  document.querySelector('#site-canvas')
+);

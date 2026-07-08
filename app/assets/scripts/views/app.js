@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 
 const App = React.createClass({
@@ -12,7 +11,7 @@ const App = React.createClass({
   render: function () {
     return (
       <div>
-        <header className='site-header' role='banner'>
+        <header className='site-header'>
           <div className='inner'>
             <div className='site-headline'>
               <h1 className='site-title'>
@@ -25,15 +24,18 @@ const App = React.createClass({
           </div>
         </header>
 
-        <main className='site-body' role='main'>
-          <div className='inner'>
-            {this.props.children}
-          </div>
+        <main className='site-body'>
+          <div className='inner'>{this.props.children}</div>
         </main>
 
-        <footer className='site-footer' role='contentinfo'>
+        <footer className='site-footer'>
           <div className='inner'>
-            <p><a href='http://open-contracting.org/' title='Visit Open Contracting Partnership website'>OCP</a> &middot; 2016</p>
+            <p>
+              <a href='http://open-contracting.org/' title='Visit Open Contracting Partnership website'>
+                OCP
+              </a>{' '}
+              &middot; 2016
+            </p>
           </div>
         </footer>
       </div>

@@ -1,4 +1,3 @@
-'use strict';
 export const REQUEST_FORMS = 'REQUEST_FORMS';
 export const RECEIVE_FORMS = 'RECEIVE_FORMS';
 

@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -36,27 +35,25 @@ const Home = React.createClass({
         <div className='page__body'>
           <div className='inner'>
             <div className='page__content'>
-
-              {this.props.formsFetching
-                ? <p>Loading forms...</p>
-                : (
-                  <div>
-                    <ul className='card-entries'>
-                      {this.props.forms.map(o => {
-                        return (
-                          <li key={o.name} className='card--form-wrapper'>
-                            <article className='card card--form'>
-                              <Link to={`/forms/${o.name}`} className='card__contents'>
-                <h1 className='card__title'>{o.name}</h1>
-              </Link>
-                            </article>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                  )}
-
+              {this.props.formsFetching ? (
+                <p>Loading forms...</p>
+              ) : (
+                <div>
+                  <ul className='card-entries'>
+                    {this.props.forms.map(o => {
+                      return (
+                        <li key={o.name} className='card--form-wrapper'>
+                          <article className='card card--form'>
+                            <Link to={`/forms/${o.name}`} className='card__contents'>
+                              <h1 className='card__title'>{o.name}</h1>
+                            </Link>
+                          </article>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -68,7 +65,7 @@ const Home = React.createClass({
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-function selector (state) {
+function selector(state) {
   return {
     forms: state.forms.items,
     formsFetching: state.forms.fetching,
@@ -76,7 +73,7 @@ function selector (state) {
   };
 }
 
-function dispatcher (dispatch) {
+function dispatcher(dispatch) {
   return {
     _fetchForms: () => dispatch(fetchForms())
   };

@@ -1,9 +1,8 @@
-'use strict';
+import _ from 'lodash';
 import React from 'react';
+import Form from 'react-jsonschema-form';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import Form from 'react-jsonschema-form';
-import _ from 'lodash';
 import { fetchEntryFormData, updateEntryFormData } from '../actions/action-creators';
 
 const Entry = React.createClass({
@@ -32,11 +31,9 @@ const Entry = React.createClass({
     })
   },
 
-  getInitialState: function () {
-    return {
-      formdata: {}
-    };
-  },
+  getInitialState: () => ({
+    formdata: {}
+  }),
 
   componentDidMount: function () {
     this.props._fetchEntryFormData(this.props.params.form, this.props.params.entry);
@@ -67,8 +64,8 @@ const Entry = React.createClass({
     }
   },
 
-  onFormError: function () {
-    console.log('onFormError', arguments);
+  onFormError: (...args) => {
+    console.log('onFormError', args);
   },
 
   renderContent: function () {
@@ -136,16 +133,16 @@ const Entry = React.createClass({
           onSubmit={this.onFormSubmit}
           onError={this.onFormError}
         >
-          <button type='submit' className='button button--primary-outline'>Submit</button>
+          <button type='submit' className='button button--primary-outline'>
+            Submit
+          </button>
         </Form>
-        {this.props.dataUpdate.statusCode !== null && this.props.dataUpdate.statusCode !== 200
-          ? (
-            <div className='alert alert--danger alert--popover' role='alert'>
-              <strong>Error:</strong> {this.props.dataUpdate.message}
-              <p>Please try again.</p>
-            </div>
-            )
-          : null}
+        {this.props.dataUpdate.statusCode !== null && this.props.dataUpdate.statusCode !== 200 ? (
+          <div className='alert alert--danger alert--popover' role='alert'>
+            <strong>Error:</strong> {this.props.dataUpdate.message}
+            <p>Please try again.</p>
+          </div>
+        ) : null}
       </div>
     );
   },
@@ -160,16 +157,16 @@ const Entry = React.createClass({
         <header className='page__header'>
           <div className='inner'>
             <div className='page__headline'>
-              <p className='page-suptitle'><Link to='/'>Form</Link> / <Link to={`/forms/${this.props.form}`}>{this.props.params.form}</Link></p>
+              <p className='page-suptitle'>
+                <Link to='/'>Form</Link> / <Link to={`/forms/${this.props.form}`}>{this.props.params.form}</Link>
+              </p>
               <h1 className='page-title'>{this.props.entryName || this.props.params.entry}</h1>
             </div>
           </div>
         </header>
         <div className='page__body'>
           <div className='inner'>
-            <div className='page__content'>
-              {this.renderContent()}
-            </div>
+            <div className='page__content'>{this.renderContent()}</div>
           </div>
         </div>
       </section>
@@ -180,7 +177,7 @@ const Entry = React.createClass({
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-function selector (state) {
+function selector(state) {
   return {
     form: state.entryFormData.form,
     entry: state.entryFormData.entry,
@@ -194,7 +191,7 @@ function selector (state) {
   };
 }
 
-function dispatcher (dispatch) {
+function dispatcher(dispatch) {
   return {
     _fetchEntryFormData: (form, entry) => dispatch(fetchEntryFormData(form, entry)),
     _updateEntryFormData: (form, entry, data) => dispatch(updateEntryFormData(form, entry, data))

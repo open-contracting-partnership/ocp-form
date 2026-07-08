@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -33,7 +32,9 @@ const Form = React.createClass({
         <header className='page__header'>
           <div className='inner'>
             <div className='page__headline'>
-              <p className='page-suptitle'><Link to='/'>Form</Link></p>
+              <p className='page-suptitle'>
+                <Link to='/'>Form</Link>
+              </p>
               <h1 className='page-title'>{this.props.params.form}</h1>
             </div>
           </div>
@@ -41,27 +42,25 @@ const Form = React.createClass({
         <div className='page__body'>
           <div className='inner'>
             <div className='page__content'>
-
-              {this.props.entriesFetching
-                ? <p>Loading form entries</p>
-                : (
-                  <div>
-                    <ul className='card-entries'>
-                      {this.props.entries.map(o => {
-                        return (
-                          <li key={o.name} className='card--entry-wrapper'>
-                            <article className='card card--entry'>
-                              <Link to={`/forms/${this.props.form}/${o.id}`} className='card__contents'>
-                <h1 className='card__title'>{o.name}</h1>
-              </Link>
-                            </article>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                  )}
-
+              {this.props.entriesFetching ? (
+                <p>Loading form entries</p>
+              ) : (
+                <div>
+                  <ul className='card-entries'>
+                    {this.props.entries.map(o => {
+                      return (
+                        <li key={o.name} className='card--entry-wrapper'>
+                          <article className='card card--entry'>
+                            <Link to={`/forms/${this.props.form}/${o.id}`} className='card__contents'>
+                              <h1 className='card__title'>{o.name}</h1>
+                            </Link>
+                          </article>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -73,7 +72,7 @@ const Form = React.createClass({
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-function selector (state) {
+function selector(state) {
   return {
     form: state.formEntries.form,
     entries: state.formEntries.items,
@@ -82,9 +81,9 @@ function selector (state) {
   };
 }
 
-function dispatcher (dispatch) {
+function dispatcher(dispatch) {
   return {
-    _fetchFormsEntries: (form) => dispatch(fetchFormsEntries(form))
+    _fetchFormsEntries: form => dispatch(fetchFormsEntries(form))
   };
 }
 

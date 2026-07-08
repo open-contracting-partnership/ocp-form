@@ -1,6 +1,4 @@
-'use strict';
-
-var fs = require('fs');
+var fs = require('node:fs');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var del = require('del');
@@ -41,7 +39,7 @@ var watching = false;
 // ------------------------- Helper functions --------------------------------//
 // ---------------------------------------------------------------------------//
 
-function readPackage () {
+function readPackage() {
   pkg = JSON.parse(fs.readFileSync('package.json'));
 }
 readPackage();
@@ -54,7 +52,7 @@ readPackage();
 // Compiles the user's script files to bundle.js.
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
-gulp.task('javascript', function () {
+gulp.task('javascript', () => {
   var watcher = browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
@@ -67,143 +65,169 @@ gulp.task('javascript', function () {
     watcher = watchify(watcher);
   }
 
-  function bundler () {
+  function bundler() {
     if (pkg.dependencies) {
       watcher.external(Object.keys(pkg.dependencies));
     }
-    return watcher.bundle()
-      .on('error', function (e) {
-        console.log('Javascript error:', e);
-      })
-      .pipe(source('bundle.js'))
-      .pipe(buffer())
-      // Source maps.
-      .pipe(sourcemaps.init({loadMaps: true}))
-      .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest('.tmp/assets/scripts'))
-      .pipe(reload({stream: true}));
+    return (
+      watcher
+        .bundle()
+        .on('error', e => {
+          console.log('Javascript error:', e);
+        })
+        .pipe(source('bundle.js'))
+        .pipe(buffer())
+        // Source maps.
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('.tmp/assets/scripts'))
+        .pipe(reload({ stream: true }))
+    );
   }
 
-  watcher
-  .on('log', gutil.log)
-  .on('update', bundler);
+  watcher.on('log', gutil.log).on('update', bundler);
 
   return bundler();
 });
 
 // Vendor scripts. Basically all the dependencies in the package.js.
 // Therefore be careful and keep the dependencies clean.
-gulp.task('vendorScripts', function () {
+gulp.task('vendorScripts', () => {
   // Ensure package is updated.
   readPackage();
   var vb = browserify({
     debug: true,
     require: pkg.dependencies ? Object.keys(pkg.dependencies) : []
   });
-  return vb.bundle()
+  return vb
+    .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('vendor.js'))
     .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('.tmp/assets/scripts/'))
-    .pipe(reload({stream: true}));
+    .pipe(reload({ stream: true }));
 });
 
 // //////////////////////////////////////////////////////////////////////////////
 // --------------------------- Helper tasks -----------------------------------//
 // ----------------------------------------------------------------------------//
 
-gulp.task('styles', function () {
-  return gulp.src('app/assets/styles/main.scss')
+gulp.task('styles', () =>
+  gulp
+    .src('app/assets/styles/main.scss')
     .pipe($.sourcemaps.init())
-    .pipe(sass({
-      outputStyle: 'expanded',
-      precision: 10,
-      includePaths: ['.'].concat(require('node-bourbon').includePaths).concat(['node_modules/jeet/scss'])
-    }))
+    .pipe(
+      sass({
+        outputStyle: 'expanded',
+        precision: 10,
+        includePaths: ['.'].concat(require('node-bourbon').includePaths).concat(['node_modules/jeet/scss'])
+      })
+    )
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/assets/styles'))
-    .pipe(reload({stream: true}));
-});
+    .pipe(reload({ stream: true }))
+);
 
-gulp.task('html', gulp.series('styles', function () {
-  return gulp.src('app/*.html')
-    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-    .pipe($.if('*.js', $.uglify()))
-    .pipe($.if('*.css', $.csso()))
-    .pipe($.if(/\.(css|js)$/, rev()))
-    .pipe(revReplace())
-    .pipe(gulp.dest('dist'));
-}));
+gulp.task(
+  'html',
+  gulp.series('styles', () =>
+    gulp
+      .src('app/*.html')
+      .pipe($.useref({ searchPath: ['.tmp', 'app', '.'] }))
+      .pipe($.if('*.js', $.uglify()))
+      .pipe($.if('*.css', $.csso()))
+      .pipe($.if(/\.(css|js)$/, rev()))
+      .pipe(revReplace())
+      .pipe(gulp.dest('dist'))
+  )
+);
 
-gulp.task('images', async function () {
+gulp.task('images', async () => {
   var imagemin = await import('gulp-imagemin');
-  return gulp.src('app/assets/graphics/**/*', {encoding: false})
-    .pipe($.cache(imagemin.default([
-      // don't remove IDs from SVGs, they are often used
-      // as hooks for embedding and styling
-      imagemin.svgo({
-        plugins: [{
-          name: 'preset-default',
-          params: {overrides: {cleanupIds: false}}
-        }]
-      })
-    ])))
+  return gulp
+    .src('app/assets/graphics/**/*', { encoding: false })
+    .pipe(
+      $.cache(
+        imagemin.default([
+          // don't remove IDs from SVGs, they are often used
+          // as hooks for embedding and styling
+          imagemin.svgo({
+            plugins: [
+              {
+                name: 'preset-default',
+                params: { overrides: { cleanupIds: false } }
+              }
+            ]
+          })
+        ])
+      )
+    )
     .pipe(gulp.dest('dist/assets/graphics'));
 });
 
-gulp.task('extras', function () {
-  return gulp.src([
-    '_headers',
-    'app/**/*',
-    '!app/*.html',
-    '!app/assets/graphics/**',
-    '!app/assets/vendor/**',
-    '!app/assets/styles/**',
-    '!app/assets/scripts/**'
-  ], {
-    dot: true
-  }).pipe(gulp.dest('dist'));
-});
+gulp.task('extras', () =>
+  gulp
+    .src(
+      [
+        '_headers',
+        'app/**/*',
+        '!app/*.html',
+        '!app/assets/graphics/**',
+        '!app/assets/vendor/**',
+        '!app/assets/styles/**',
+        '!app/assets/scripts/**'
+      ],
+      {
+        dot: true
+      }
+    )
+    .pipe(gulp.dest('dist'))
+);
 
 // /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Callable tasks ----------------------------------//
 // ---------------------------------------------------------------------------//
 
-gulp.task('clean', function () {
-  return del(['.tmp', 'dist'])
-    .then(function () {
-      $.cache.clearAll();
-    });
-});
+gulp.task('clean', () =>
+  del(['.tmp', 'dist']).then(() => {
+    $.cache.clearAll();
+  })
+);
 
-gulp.task('serve', gulp.series(function () {
-  watching = true;
-}, gulp.parallel('vendorScripts', 'javascript', 'styles'), function () {
-  browserSync({
-    port: 3000,
-    server: {
-      baseDir: ['.tmp', 'app'],
-      routes: {
-        '/node_modules': './node_modules'
-      }
+gulp.task(
+  'serve',
+  gulp.series(
+    () => {
+      watching = true;
+    },
+    gulp.parallel('vendorScripts', 'javascript', 'styles'),
+    () => {
+      browserSync({
+        port: 3000,
+        server: {
+          baseDir: ['.tmp', 'app'],
+          routes: {
+            '/node_modules': './node_modules'
+          }
+        }
+      });
+
+      // watch for changes
+      gulp.watch(['app/*.html', 'app/assets/graphics/**/*']).on('change', reload);
+
+      gulp.watch('app/assets/styles/**/*.scss', ['styles']);
+      gulp.watch('package.json', ['vendorScripts']);
     }
-  });
+  )
+);
 
-  // watch for changes
-  gulp.watch([
-    'app/*.html',
-    'app/assets/graphics/**/*'
-  ]).on('change', reload);
-
-  gulp.watch('app/assets/styles/**/*.scss', ['styles']);
-  gulp.watch('package.json', ['vendorScripts']);
-}));
-
-gulp.task('build', gulp.series(gulp.parallel('vendorScripts', 'javascript'), gulp.parallel('html', 'images', 'extras'), function () {
-  return gulp.src('dist/**/*')
-    .pipe($.size({title: 'build', gzip: true}));
-}));
+gulp.task(
+  'build',
+  gulp.series(gulp.parallel('vendorScripts', 'javascript'), gulp.parallel('html', 'images', 'extras'), () =>
+    gulp.src('dist/**/*').pipe($.size({ title: 'build', gzip: true }))
+  )
+);
 
 gulp.task('default', gulp.parallel('clean', 'build'));
