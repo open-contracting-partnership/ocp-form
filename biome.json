@@ -14,7 +14,7 @@
   },
   "formatter": {
     "indentStyle": "space",
-    "indentWidth": 2,
+    "indentWidth": 4,
     "lineWidth": 119
   },
   "json": {
@@ -23,13 +23,7 @@
     }
   },
   "javascript": {
-    "jsxRuntime": "reactClassic",
-    "formatter": {
-      "arrowParentheses": "asNeeded",
-      "jsxQuoteStyle": "single",
-      "quoteStyle": "single",
-      "trailingCommas": "none"
-    }
+    "jsxRuntime": "reactClassic"
   },
   "linter": {
     "enabled": true,

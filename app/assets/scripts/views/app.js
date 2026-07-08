@@ -1,46 +1,51 @@
-import React from 'react';
+import React from "react";
 
 const App = React.createClass({
-  displayName: 'App',
+    displayName: "App",
 
-  propTypes: {
-    dispatch: React.PropTypes.func,
-    children: React.PropTypes.object
-  },
+    propTypes: {
+        dispatch: React.PropTypes.func,
+        children: React.PropTypes.object,
+    },
 
-  render: function () {
-    return (
-      <div>
-        <header className='site-header'>
-          <div className='inner'>
-            <div className='site-headline'>
-              <h1 className='site-title'>
-                <a href='/' title='Visit homepage'>
-                  <img src='assets/graphics/layout/ocp-logo-neg.svg' width='482' height='38' alt='Ocp logo' />
-                  <span>Open Contracting Partnership</span>
-                </a>
-              </h1>
+    render: function () {
+        return (
+            <div>
+                <header className="site-header">
+                    <div className="inner">
+                        <div className="site-headline">
+                            <h1 className="site-title">
+                                <a href="/" title="Visit homepage">
+                                    <img
+                                        src="assets/graphics/layout/ocp-logo-neg.svg"
+                                        width="482"
+                                        height="38"
+                                        alt="Ocp logo"
+                                    />
+                                    <span>Open Contracting Partnership</span>
+                                </a>
+                            </h1>
+                        </div>
+                    </div>
+                </header>
+
+                <main className="site-body">
+                    <div className="inner">{this.props.children}</div>
+                </main>
+
+                <footer className="site-footer">
+                    <div className="inner">
+                        <p>
+                            <a href="http://open-contracting.org/" title="Visit Open Contracting Partnership website">
+                                OCP
+                            </a>{" "}
+                            &middot; 2016
+                        </p>
+                    </div>
+                </footer>
             </div>
-          </div>
-        </header>
-
-        <main className='site-body'>
-          <div className='inner'>{this.props.children}</div>
-        </main>
-
-        <footer className='site-footer'>
-          <div className='inner'>
-            <p>
-              <a href='http://open-contracting.org/' title='Visit Open Contracting Partnership website'>
-                OCP
-              </a>{' '}
-              &middot; 2016
-            </p>
-          </div>
-        </footer>
-      </div>
-    );
-  }
+        );
+    },
 });
 
 module.exports = App;

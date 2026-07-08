@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const _ = require("lodash");
 /*
  * App configuration.
  *
@@ -18,11 +18,11 @@ const _ = require('lodash');
  *      polluting the repo.
  */
 
-const configurations = require('./config/*.js', { mode: 'hash' });
+const configurations = require("./config/*.js", { mode: "hash" });
 const config = configurations.local || {};
 
-if (process.env.DS_ENV === 'staging') {
-  _.defaultsDeep(config, configurations.staging);
+if (process.env.DS_ENV === "staging") {
+    _.defaultsDeep(config, configurations.staging);
 }
 _.defaultsDeep(config, configurations.production);
 
